@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meli Play - UX Challenge Case Study</title>
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --meli-yellow: #FFE600;
+            --meli-blue: #3483FA;
+            --meli-dark-blue: #2D3277;
+            --meli-dark: #333333;
+            --meli-gray: #666666;
+            --meli-light-gray: #EBEBEB;
+            --meli-bg: #EBEBEB;
+            --white: #FFFFFF;
+            --insight-bg: #424A9A;
+            --hero-blue: #4555A4; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { scroll-behavior: smooth; }
+        body { font-family: Arial, sans-serif; color: var(--meli-dark); background: var(--meli-bg); line-height: 1.6; overflow-x: hidden; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+        .container-flujos { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+        
+        /* Ocultar las citas del sistema */
+        .hidden-cite { display: none !important; }
+
+        /* TITULOS GENERALES */
+        h2.section-title { font-size: 32px; color: var(--meli-dark-blue); margin-bottom: 20px; border-left: 6px solid var(--meli-yellow); padding-left: 15px; line-height: 1.2; }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(180deg, var(--hero-blue) 0%, var(--hero-blue) 40%, rgba(69, 85, 164, 0.05) 85%, var(--meli-bg) 100%);
+            padding: 80px 0 60px 0;
+            text-align: center;
+        }
+        .hero-logo { margin-bottom: 40px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+        .hero-logo:hover { transform: scale(1.05); } 
+        .hero-logo img { height: 70px; width: auto; }
+        .hero-title { font-size: 56px; color: var(--meli-yellow); margin-bottom: 20px; font-weight: 700; line-height: 1.1; letter-spacing: -1px; }
+        .hero-subtitle { font-size: 20px; color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 50px auto; font-weight: 400; }
+        
+        .hero-image-placeholder {
+            width: 100%; max-width: 800px; height: 400px; margin: 0 auto; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            background-image: url('image_cinema.jpg'); 
+            background-size: cover; background-position: center;
+            transition: transform 0.5s ease, box-shadow 0.5s ease; 
+        }
+        .hero-image-placeholder:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        /* CONTEXTO & RETO */
+        .section-reto { padding: 100px 0; background: transparent; }
+        .grid-reto { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; align-items: center; }
+        
+        .reto-content .lead { font-size: 22px; color: var(--meli-dark-blue); margin-bottom: 20px; line-height: 1.5; }
+        .reto-content strong { color: var(--meli-dark); }
+        .texto-reto { font-size: 18px; line-height: 1.6; color: var(--meli-gray); }
+        
+        .reto-metric { display: flex; justify-content: center; }
+        .kpi-widget {
+            background: var(--white);
+            border: 1px solid var(--meli-light-gray);
+            border-radius: 24px;
+            padding: 50px 40px; /* Aumenté un poco el padding superior al sacar el header */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 320px;
+            position: relative;
+            overflow: hidden;
+            text-align: center; /* Centro el contenido para que se vea mejor sin el header */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; 
+        }
+        .kpi-widget:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1); 
+        }
+        .kpi-widget::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--meli-yellow);
+        }
+        .kpi-value { font-size: 84px; font-weight: 700; color: var(--meli-dark-blue); line-height: 1; margin-bottom: 10px; letter-spacing: -2px; }
+        .kpi-label { font-size: 16px; color: var(--meli-gray); margin-bottom: 30px; font-weight: 600; }
+        .kpi-footer { border-top: 1px solid var(--meli-light-gray); padding-top: 20px; }
+        .kpi-footer .badge { background: rgba(52, 131, 250, 0.1); color: var(--meli-blue); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 700; display: inline-block; transition: all 0.3s ease; }
+        .kpi-widget:hover .badge { background: var(--meli-blue); color: var(--white); }
+
+        /* USER PERSONAS */
+        .section-personas { padding: 40px 0 60px 0; background: transparent; }
+        .persona-card { 
+            display: flex; gap: 40px; margin-bottom: 40px; background: var(--white); padding: 30px; border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid transparent; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease; 
+        }
+        .persona-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08); 
+            border: 1px solid rgba(52, 131, 250, 0.2);
+        }
+        .persona-img { width: 120px; height: 120px; border-radius: 50%; background: #ccc; flex-shrink: 0; object-fit: cover; transition: transform 0.4s ease; }
+        .persona-card:hover .persona-img { transform: scale(1.05) rotate(2deg); } 
+        .persona-content h3 { font-size: 24px; color: var(--meli-dark-blue); margin-bottom: 10px; }
+        .persona-content h3 span { color: var(--meli-dark-blue); font-weight: 600; }
+        .persona-quote { font-size: 16px; font-style: italic; color: var(--meli-gray); margin-bottom: 15px; border-left: 3px solid var(--meli-yellow); padding-left: 15px; line-height: 1.5; }
+        .persona-painpoint { font-size: 16px; color: var(--meli-dark); background: rgba(52, 131, 250, 0.1); padding: 10px 15px; border-radius: 6px; display: inline-block; }
+
+        /* HIPOTESIS */
+        .section-hipotesis-wrapper { padding: 20px 0 80px 0; background: transparent; }
+        .section-hipotesis { 
+            padding: 60px 40px; background: var(--white); margin: 0 auto; max-width: 900px; border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; border: 2px solid var(--meli-blue); 
+            transition: box-shadow 0.3s ease;
+        }
+        .section-hipotesis:hover { box-shadow: 0 20px 50px rgba(52, 131, 250, 0.15); }
+        .chip { 
+            background: var(--meli-blue); color: var(--white); padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; display: inline-block; margin-bottom: 20px; 
+            transition: transform 0.2s ease, background 0.2s ease; cursor: default;
+        }
+        .chip:hover { transform: scale(1.05); background: #2968c8; }
+        .section-hipotesis h3 { font-size: 28px; color: var(--meli-dark-blue); margin-bottom: 15px; }
+        .section-hipotesis p { font-size: 18px; line-height: 1.6; color: var(--meli-gray); }
+
+        /* INSIGHTS CLUSTERS */
+        .section-insights-violet { background-color: var(--insight-bg); padding: 100px 0; color: #fff; position: relative; overflow: hidden; }
+        .bg-lines { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.15; }
+        .bg-lines circle { fill: none; stroke: #fff; stroke-width: 2; stroke-dasharray: 6 6; }
+        .bg-lines path { fill: none; stroke: #fff; stroke-width: 2; stroke-dasharray: 6 6; }
+
+        .insights-header { margin-bottom: 80px; position: relative; z-index: 2; }
+        .insights-header h2 { color: #fff; font-size: 36px; display: flex; align-items: center; gap: 15px; margin: 0; }
+        
+        .insight-cluster { margin-bottom: 60px; position: relative; z-index: 2; }
+        .cluster-tag { 
+            background: var(--meli-yellow); color: var(--meli-dark); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 15px; display: inline-block; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            transition: transform 0.2s ease; cursor: default;
+        }
+        .cluster-tag:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 15px rgba(255, 230, 0, 0.3); }
+        
+        .cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .insight-card-violet { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 30px; display: flex; gap: 20px; align-items: flex-start; transition: transform 0.3s ease, background 0.3s ease; }
+        .insight-card-violet:hover { transform: translateY(-8px); background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); } 
+        .insight-card-violet .number { font-size: 20px; font-weight: bold; color: #fff; opacity: 0.9; flex-shrink: 0; }
+        .insight-card-violet .text { font-size: 16px; line-height: 1.5; color: rgba(255,255,255,0.9); }
+
+        /* PANTALLAS EN ALTA - FLUJOS */
+        .section-flujos { padding: 80px 0; background: transparent; }
+        .flujo-bloque { margin-bottom: 100px; padding-bottom: 40px; border-bottom: 1px solid #dcdcdc; }
+        .flujo-bloque:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .flujo-header { margin-bottom: 60px; text-align: center; max-width: 1100px; margin-left: auto; margin-right: auto; padding: 0 40px; }
+        .flujo-header h3 { font-size: 28px; color: var(--meli-dark-blue); margin-bottom: 10px; }
+        .flujo-header p { font-size: 18px; color: var(--meli-gray); max-width: 700px; margin: 0 auto; }
+        
+        .mockup-grid-wrapper {
+            width: 100%; 
+            overflow-x: auto; 
+            padding-bottom: 50px; 
+            padding-top: 20px; 
+            scroll-snap-type: x mandatory; 
+            -webkit-overflow-scrolling: touch; 
+            
+            /* OCULTAR BARRA DE SCROLL MANTENIENDO LA FUNCIONALIDAD */
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .mockup-grid-wrapper::-webkit-scrollbar { 
+            display: none;  /* Safari and Chrome */
+        }
+
+        .mockup-grid { display: flex; gap: 40px; flex-wrap: nowrap; width: max-content; margin: 0 auto; padding: 10px 20px; }
+        .mockup-card { width: 250px; flex-shrink: 0; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center; cursor: default; }
+        
+        /* MICROINTERACCIÓN IPHONE */
+        .iphone-mockup {
+            position: relative; width: 100%; height: 520px; border: 12px solid #1a1a1a; border-radius: 45px;
+            background-color: var(--white); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2), inset 0 0 0 3px #444;
+            overflow: hidden; display: flex; justify-content: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+        .mockup-card:hover .iphone-mockup {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 40px 70px -15px rgba(0,0,0,0.35), inset 0 0 0 3px #444;
+        }
+        .mockup-step { background: var(--meli-blue); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 15px; transition: transform 0.3s ease; }
+        .mockup-card:hover .mockup-step { transform: scale(1.2); background: var(--meli-dark-blue); }
+        .mockup-caption { font-size: 15px; color: var(--meli-dark); text-align: center; font-weight: 600; line-height: 1.4; margin-top: 15px; transition: color 0.3s ease; }
+        .mockup-card:hover .mockup-caption { color: var(--meli-blue); }
+
+        .dynamic-island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 90px; height: 25px; background-color: #000; border-radius: 20px; z-index: 10; }
+        .iphone-mockup img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 32px; background-color: #f0f0f0; transition: transform 0.6s ease; }
+        .mockup-card:hover .iphone-mockup img { transform: scale(1.02); }
+
+        /* SECCIÓN PROTOTIPO INTERACTIVO */
+        .section-prototype { padding: 80px 0; background: transparent; }
+        .prototype-container { 
+            width: 100%; max-width: 1000px; height: 700px; margin: 0 auto; border-radius: 20px; overflow: hidden; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 4px solid var(--white); background: var(--white); 
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .prototype-container:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+
+        /* SECCIÓN KPIs */
+        .section-kpis { background: #1A1D20; color: var(--white); padding: 80px 0; text-align: center; }
+        .section-kpis h2 { color: var(--meli-yellow); margin-bottom: 40px; font-size: 32px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto; }
+        .kpi-card { border: 1px solid rgba(255,255,255,0.2); padding: 30px; border-radius: 8px; text-align: left; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .kpi-card:hover { transform: translateY(-5px); border-color: var(--meli-yellow); background: rgba(255,255,255,0.05); }
+        .kpi-card strong { display: block; font-size: 20px; color: var(--white); margin-bottom: 10px; transition: color 0.3s ease; }
+        .kpi-card:hover strong { color: var(--meli-yellow); }
+        .kpi-card p { color: #AAA; font-size: 16px; line-height: 1.5; }
+
+        /* MOCKUP FINAL */
+        .section-final-mockup { background: transparent; padding: 80px 0 0 0; text-align: center; }
+        .section-final-mockup img { width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.15)); transition: transform 0.5s ease; }
+        .section-final-mockup img:hover { transform: scale(1.02); }
+
+        /* FOOTER */
+        .small-footer { background: var(--meli-dark); color: var(--white); text-align: center; padding: 25px 20px; font-size: 14px; margin-top: -2px; }
+        .small-footer p { margin: 0; opacity: 0.8; }
+        .small-footer strong { color: var(--meli-yellow); font-weight: 600; }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 992px) {
+            .grid-reto { grid-template-columns: 1fr; gap: 40px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container, .container-flujos { padding: 0 20px; }
+            .hero-title { font-size: 36px; }
+            .hero-image-placeholder { height: 250px; }
+            .persona-card { flex-direction: column; align-items: center; text-align: center; }
+            .persona-quote { border-left: none; border-top: 3px solid var(--meli-yellow); padding-left: 0; padding-top: 15px; }
+            .section-hipotesis { padding: 40px 20px; }
+            .mockup-grid-wrapper { padding-left: 20px; padding-right: 20px; }
+            .mockup-grid { margin: 0; }
+            .prototype-container { height: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-logo">
+                <img src="Logo meli play.png" alt="Mercado Play Logo">
+            </div>
+            <h1 class="hero-title">MELI UX Challenge</h1>
+            <p class="hero-subtitle">Estrategia de producto y diseño UI para resolver el descubrimiento social en Meli Play.</p>
+            <div class="hero-image-placeholder"></div>
+        </div>
+    </header>
+
+    <!-- CONTEXTO Y RETO -->
+    <section class="section-reto container">
+        <div class="grid-reto">
+            <div class="reto-content">
+                <h2 class="section-title">El Reto del Negocio</h2>
+                <p class="texto-reto lead">
+                    Durante el último mes, la plataforma experimentó una <strong>caída del 4% en la frecuencia de uso</strong><span class="hidden-cite">[cite: 1]</span>.
+                </p>
+                <p class="texto-reto">
+                    A través de nuestro research, descubrimos que el principal punto de fricción es el descubrimiento de contenido. Los usuarios no confían en algoritmos genéricos ni en críticos desconocidos; su decisión de visualización depende casi enteramente de las <strong>recomendaciones de su círculo social más cercano</strong> (amigos y familiares)<span class="hidden-cite">[cite: 1]</span>.
+                </p>
+            </div>
+            <div class="reto-metric">
+                <div class="kpi-widget">
+                    <div class="kpi-value">-4%</div>
+                    <div class="kpi-label">Frecuencia de uso mensual</div>
+                    <div class="kpi-footer">
+                        <span class="badge">Fricción en Discovery</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USER PERSONAS -->
+    <section class="section-personas">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 40px;">Entendiendo al Usuario</h2>
+            
+            <div class="persona-card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop" class="persona-img" alt="Carla">
+                <div class="persona-content">
+                    <h3>Carla (21 años) - <span>Fragmentación</span></h3>
+                    <p class="persona-quote">"Tengo una conversación de WhatsApp conmigo misma para anotar todas las películas que me recomiendan mis compañeros de trabajo, así después puedo verlas en Meli Play”<span class="hidden-cite">[cite: 1]</span>.</p>
+                    <div class="persona-painpoint"><strong>Pain Point:</strong> Abandona la plataforma para gestionar su watchlist en apps de terceros.</div>
+                </div>
+            </div>
+
+            <div class="persona-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop" class="persona-img" alt="Virginia">
+                <div class="persona-content">
+                    <h3>Virginia (40 años) - <span>Desconfianza</span></h3>
+                    <p class="persona-quote">"Nunca me guío por las recomendaciones de los críticos de cine o por las opiniones de quienes no conozco”<span class="hidden-cite">[cite: 1]</span>.</p>
+                    <div class="persona-painpoint"><strong>Pain Point:</strong> Exige validación social real antes de invertir su tiempo en un contenido.</div>
+                </div>
+            </div>
+
+            <div class="persona-card">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop" class="persona-img" alt="Roberto">
+                <div class="persona-content">
+                    <h3>Roberto (60 años) - <span>Dependencia</span></h3>
+                    <p class="persona-quote">"La tecnología no es mi fuerte. Cuando abro Meli Play, me gustaría tener un lugar con los contenidos destacados por mi familia”<span class="hidden-cite">[cite: 1]</span>.</p>
+                    <div class="persona-painpoint"><strong>Pain Point:</strong> Sobrecarga cognitiva al navegar. Necesita interfaces pre-curadas por su entorno.</div>
+                </div>
+            </div>
+
+            <div class="persona-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop" class="persona-img" alt="Andrés">
+                <div class="persona-content">
+                    <h3>Andrés (30 años) - <span>Fricción</span></h3>
+                    <p class="persona-quote">"Mi papá siempre se olvida el nombre de las series que me quiere recomendar, y termino teniendo que buscar los títulos o los actores en Google”<span class="hidden-cite">[cite: 1]</span>.</p>
+                    <div class="persona-painpoint"><strong>Pain Point:</strong> Pérdida de tiempo intentando descifrar recomendaciones informales fuera de la app.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIPOTESIS -->
+    <div class="section-hipotesis-wrapper">
+        <div class="container">
+            <div class="section-hipotesis">
+                <span class="chip">Estrategia Core</span>
+                <h3>Ecosistema Integrado</h3>
+                <p>El usuario que consume Meli Play es el mismo que navega en Mercado Libre. Al replicar el modelo mental de las "Listas de Favoritos" del e-commerce para el entorno de streaming, reducimos la curva de aprendizaje a cero. Los usuarios ya saben cómo guardar elementos y compartir listas; reutilizar este comportamiento asegura adopción rápida y consistencia con la UI.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSIGHTS CLUSTERS -->
+    <section class="section-insights-violet">
+        <svg class="bg-lines" width="100%" height="100%">
+            <path d="M-100,150 Q 300,50 600,200 T 1300,150" />
+            <path d="M-50,400 Q 400,600 800,300 T 1400,450" />
+            <circle cx="20%" cy="30%" r="150" />
+            <circle cx="85%" cy="70%" r="200" />
+        </svg>
+
+        <div class="container">
+            <div class="insights-header">
+                <h2>Insights</h2>
+            </div>
+
+            <div class="insight-cluster">
+                <div class="cluster-tag">Social</div>
+                <div class="cluster-grid">
+                    <div class="insight-card-violet">
+                        <div class="number">01</div>
+                        <div class="text">Cuando las recomendaciones ocurren fuera de la plataforma (ej. WhatsApp), el sistema no conserva su contexto, lo que dificulta recordar y valorar los contenidos sugeridos por el círculo íntimo<span class="hidden-cite">[cite: 1]</span>.</div>
+                    </div>
+                    <div class="insight-card-violet">
+                        <div class="number">02</div>
+                        <div class="text">La invisibilidad de recomendaciones hechas por personas conocidas reduce drásticamente las señales de confianza social, limitando la toma de decisión para iniciar un contenido<span class="hidden-cite">[cite: 1]</span>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-cluster">
+                <div class="cluster-tag">Memoria</div>
+                <div class="cluster-grid">
+                    <div class="insight-card-violet">
+                        <div class="number">03</div>
+                        <div class="text">Las recomendaciones verbales o informales no son capturadas por el sistema, fragmentando la experiencia y generando frustración al intentar recordar o buscar títulos en Google<span class="hidden-cite">[cite: 1]</span>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-cluster">
+                <div class="cluster-tag">Autonomía</div>
+                <div class="cluster-grid">
+                    <div class="insight-card-violet">
+                        <div class="number">04</div>
+                        <div class="text">La falta de espacios o listas pre-curadas por familiares dificulta la navegación de usuarios mayores, generando sobrecarga cognitiva frente al catálogo general del streaming<span class="hidden-cite">[cite: 1]</span>.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PANTALLAS EN ALTA - FLUJOS -->
+    <section class="section-flujos">
+        <div class="container-flujos">
+            <h2 class="section-title" style="max-width: 1100px; margin: 0 auto 40px auto;">Solución UI</h2>
+
+            <!-- FLUJO 1 -->
+            <div class="flujo-bloque">
+                <div class="flujo-header">
+                    <h3>Flujo 1: Curaduría y Social Share</h3>
+                    <p>Flujo para guardar contenido, crear nuevas listas personalizadas e invitar a miembros del círculo íntimo en menos de 3 clics.</p>
+                </div>
+                
+                <div class="mockup-grid-wrapper">
+                    <div class="mockup-grid">
+                        <div class="mockup-card">
+                            <div class="mockup-step">1</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Recomendations.png" alt="Detalle Contenido">
+                            </div>
+                            <div class="mockup-caption">Detalle de contenido con CTA "Guardar en una lista".</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">2</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="List Selected.png" alt="Guardar Lista">
+                            </div>
+                            <div class="mockup-caption">Bottom Sheet nativo.</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">3</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Create List-1.png" alt="Crear Lista">
+                            </div>
+                            <div class="mockup-caption">Creación rápida de lista.</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">4</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Share List.png" alt="Compartir">
+                            </div>
+                            <div class="mockup-caption">Hoja de compartir nativa para activar el efecto red.</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">5</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Detail.png" alt="Éxito">
+                            </div>
+                            <div class="mockup-caption">Validación visual de invitación enviada/guardado.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FLUJO 2 -->
+            <div class="flujo-bloque">
+                <div class="flujo-header">
+                    <h3>Flujo 2: Exploración y Gestión Colaborativa</h3>
+                    <p>Un ecosistema unificado donde el usuario encuentra el contenido ya filtrado por su círculo de confianza, listo para disfrutar sin fricción.</p>
+                </div>
+                
+                <div class="mockup-grid-wrapper">
+                    <div class="mockup-grid">
+                        <div class="mockup-card">
+                            <div class="mockup-step">1</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Discovery_2.png" alt="Hub de Listas">
+                            </div>
+                            <div class="mockup-caption">Pestaña "Listas" con carruseles categorizados.</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">2</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="Edit List.png" alt="Editar y Configurar">
+                            </div>
+                            <div class="mockup-caption">Gestión de la lista general.</div>
+                        </div>
+                        <div class="mockup-card">
+                            <div class="mockup-step">3</div>
+                            <div class="iphone-mockup">
+                                <div class="dynamic-island"></div>
+                                <img src="See List.png" alt="Detalle Lista Colaborativa">
+                            </div>
+                            <div class="mockup-caption">Detalle social: Muestra explícitamente "Agregado por.." para dar contexto.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECCIÓN KPIs -->
+    <section class="section-kpis">
+        <div class="container">
+            <h2>Métricas de Éxito (KPIs)</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <strong>Validación de interés</strong>
+                    <p>Evaluar el porcentaje de usuarios activos que interactuarían con la nueva funcionalidad, creando o uniéndose a una lista durante los primeros 30 días post-lanzamiento.</p>
+                </div>
+                <div class="kpi-card">
+                    <strong>Recuperación de Frecuencia</strong>
+                    <p>Monitorear el incremento en la apertura diaria de la app, bajo la hipótesis de que las actualizaciones orgánicas del círculo social ayudarán a revertir la caída inicial del 4%.</p>
+                </div>
+                <div class="kpi-card">
+                    <strong>Reducción del Time-to-Watch</strong>
+                    <p>Comprobar si el acceso rápido a un entorno pre-curado por conocidos disminuye el tiempo promedio de búsqueda previo a darle Play.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<iframe
+    style="border: none; border-radius: 24px;"
+    width="100%"
+    height="850"
+    src="https://embed.figma.com/proto/g8iCi3Rnl1DqrnYYP4uwPh/Meli-Challenge---Rocio-San-Roman?node-id=5-128&page-id=0%3A1&scaling=contain&hide-ui=1&embed-host=share"
+    allowfullscreen>
+</iframe>
+
+
+    <!-- FOOTER PEQUEÑO Y MINIMALISTA -->
+    <footer class="small-footer">
+        <div class="container">
+            <p>Diseño e investigación de UX/UI desarrollados para <strong>Mercado Libre UX Challenge</strong>.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
